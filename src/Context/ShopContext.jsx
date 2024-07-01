@@ -1,13 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
 //import { backend_url } from "../App";
-let backend_url="http://localhost:4000/"
+let backend_url="http://localhost:4000"
 
 
 export const ShopContext = createContext(null);
 
 const ShopContextProvider = (props) => {
 
-  const [products, setProducts] = useState([]);
+  const [all_products, setProducts] = useState([]);
 
   const getDefaultCart = () => {
     let cart = {};
@@ -44,7 +44,7 @@ const ShopContextProvider = (props) => {
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         try {
-          let itemInfo = products.find((product) => product.id === Number(item));
+          let itemInfo = all_products.find((product) => product.id === Number(item));
           totalAmount += cartItems[item] * itemInfo.new_price;
         } catch (error) {}
       }
@@ -57,7 +57,7 @@ const ShopContextProvider = (props) => {
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         try {
-          let itemInfo = products.find((product) => product.id === Number(item));
+          let itemInfo = all_products.find((product) => product.id === Number(item));
           totalItem += itemInfo ? cartItems[item] : 0 ;
         } catch (error) {}
       }
@@ -99,7 +99,7 @@ const ShopContextProvider = (props) => {
     }
   };
 
-  const contextValue = { products, getTotalCartItems, cartItems, addToCart, removeFromCart, getTotalCartAmount };
+  const contextValue = { all_products, getTotalCartItems, cartItems, addToCart, removeFromCart, getTotalCartAmount };
   return (
     <ShopContext.Provider value={contextValue}>
       {props.children}
