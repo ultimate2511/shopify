@@ -14,8 +14,11 @@ app.use(cors());
 mongoose.connect('mongodb+srv://mailtoanish2511:1bsJQ3QXQ7ItXQVq@cluster0.w0proe2.mongodb.net/e-commerce');
 
 // image storage
+const uploadDir = path.join(__dirname, 'upload', 'images');
 const storage=multer.diskStorage({
-    destination:'./upload/images',
+    destination:(req, file, cb) => {
+      cb(null, uploadDir);
+    },
     filename:(req,file,cb)=>{
         return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
     }
@@ -24,7 +27,9 @@ const storage=multer.diskStorage({
 // creating upload end point for images
 const upload=multer({storage:storage});
 
-app.use('/images',express.static('./upload/images'));
+
+
+app.use('/images',express.static(uploadDir));
 app.post('/upload',upload.single('product'),(req,res)=>{
      
        res.json({
