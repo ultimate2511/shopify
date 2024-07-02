@@ -4,10 +4,10 @@ import cross_icon from "../Assets/cart_cross_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 // import { backend_url, currency } from "../../App";
 import remove_icon from '../Assets/cart_cross_icon.png'
-import all_product from "../Assets/all_product";
+
 
 const CartItems = () => {
-  const {products} = useContext(ShopContext);
+  const {all_product} = useContext(ShopContext);
   const {cartItems,removeFromCart,getTotalCartAmount} = useContext(ShopContext);
 
   return (
