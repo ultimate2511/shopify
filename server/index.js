@@ -138,38 +138,59 @@ app.post('/signup', async (req, res) => {
     res.json({ success, token })
   });
 
+  // MiddleWare to fetch user from token
+const fetchuser = async (req, res, next) => {
+  const token = req.header("auth-token");
+  if (!token) {
+    res.status(401).send({ errors: "Please authenticate using a valid token" });
+  }
+  try {
+    const data = jwt.verify(token, "secret_ecom");
+    req.user = data.user;
+    next();
+  } catch (error) {
+    res.status(401).send({ errors: "Please authenticate using a valid token" });
+  }
+};
   
-// // Create an endpoint for saving the product in cart
-// app.post('/addtocart', fetchuser, async (req, res) => {
-//     console.log("Add Cart");
-//     let userData = await Users.findOne({ _id: req.user.id });
-//     userData.cartData[req.body.itemId] += 1;
-//     await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
-//     res.send("Added")
-//   })
+// Create an endpoint for saving the product in cart
+app.post('/addtocart', fetchuser, async (req, res) => {
+    console.log("Add Cart");
+    let userData = await Users.findOne({ _id: req.user.id });
+    userData.cartData[req.body.itemId] += 1;
+    await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
+    res.send("Added")
+  });
   
   
-//   // Create an endpoint for removing the product in cart
-//   app.post('/removefromcart', fetchuser, async (req, res) => {
-//     console.log("Remove Cart");
-//     let userData = await Users.findOne({ _id: req.user.id });
-//     if (userData.cartData[req.body.itemId] != 0) {
-//       userData.cartData[req.body.itemId] -= 1;
-//     }
-//     await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
-//     res.send("Removed");
-//   })
+  // Create an endpoint for removing the product in cart
+  app.post('/removefromcart', fetchuser, async (req, res) => {
+    console.log("Remove Cart");
+    let userData = await Users.findOne({ _id: req.user.id });
+    if (userData.cartData[req.body.itemId] != 0) {
+      userData.cartData[req.body.itemId] -= 1;
+    }
+    await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
+    res.send("Removed");
+  })
   
   
-//   // Create an endpoint for getting cartdata of user
-//   app.post('/getcart', fetchuser, async (req, res) => {
-//     console.log("Get Cart");
-//     let userData = await Users.findOne({ _id: req.user.id });
-//     res.json(userData.cartData);
+  //Create an endpoint for getting cartdata of user
+  app.post('/getcart', fetchuser, async (req, res) => {
+    console.log("Get Cart");
+    let userData = await Users.findOne({ _id: req.user.id });
+    res.json(userData.cartData);
   
-//   })
-  
+  })
+;
     
+// endpoint for getting latest products data
+app.get("/newcollections", async (req, res) => {
+  let products = await Product.find({});
+  let arr = products.slice(0).slice(-8);
+  console.log("New Collections");
+  res.send(arr);
+});
 
 app.post('/addProduct',async(req,res)=>{
        
