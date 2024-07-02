@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 //import { backend_url } from "../App";
-let backend_url="http://localhost:4000"
+let backend_url="https://shopify-backend-gezh.onrender.com"
 
 
 export const ShopContext = createContext(null);

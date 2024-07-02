@@ -8,7 +8,7 @@ const NewCollections = () => {
   const [new_collections,setNew_collections]=useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/newCollections')
+    fetch('https://shopify-backend-gezh.onrender.com/newCollections')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
