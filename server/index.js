@@ -24,7 +24,7 @@ const storage=multer.diskStorage({
 // creating upload end point for images
 const upload=multer({storage:storage});
 
-app.use('/images',express.static('upload/images'));
+app.use('/images',express.static('./upload/images'));
 app.post('/upload',upload.single('product'),(req,res)=>{
      
        res.json({
