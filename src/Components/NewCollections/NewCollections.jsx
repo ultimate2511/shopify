@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./NewCollections.css";
-import new_collections from "../Assets/new_collections";
+ import new_collections from "../Assets/new_collections";
 import Item from "../Item/Item";
 
 const NewCollections = () => {
+
+  const [new_collections,setNew_collections]=useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:4000/newCollections')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setNew_collections(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        // Optionally, you can set a default value or handle the error state here
+      });
+  }, []);
+  
+
   return (
     <div className="new-collections">
       <h1>NEW COLLECTIONS</h1>
       <hr />
       <div className="collections">
-        {new_collections.map((item, i) => {
+        {new_collections.map((item,i) => {
           return (
             <Item
               key={i}
