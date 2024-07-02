@@ -183,6 +183,15 @@ app.post('/addtocart', fetchuser, async (req, res) => {
   
   })
 ;
+
+// endpoint for getting womens products data
+app.get("/popularinwomen", async (req, res) => {
+  let products = await Product.find({ category: "women" });
+  let arr = products.splice(0, 4);
+  console.log("Popular In Women");
+  res.send(arr);
+});
+
     
 // endpoint for getting latest products data
 app.get("/newcollections", async (req, res) => {
